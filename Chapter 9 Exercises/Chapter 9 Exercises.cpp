@@ -5,6 +5,7 @@
 #include <forward_list>
 #include <array>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -12,12 +13,10 @@ int main() {
 
     cout << "=== Chapter 9 ===\n\n";
 
-
     // Exercise 9.1
 
     cout << "9.1: Best container for reading characters from a file:\n";
     cout << "Answer: vector<char> or string (continuous memory)\n\n";
-
 
     // Exercise 9.2
 
@@ -26,11 +25,9 @@ int main() {
     for (int x : li) cout << x << " ";
     cout << "\n\n";
 
-
     // Exercise 9.3
 
     cout << "9.3: begin() -> first element, end() -> one past last\n\n";
-
 
     // Exercise 9.4
 
@@ -39,36 +36,35 @@ int main() {
     int value = 3;
     bool found = false;
 
-    for (int x : v)
-        if (x == value)
+    for (int i = 0; i < (int)v.size(); ++i) {
+        if (v[i] == value) {
             found = true;
+            break;
+        }
+    }
 
     cout << "Found 3? " << (found ? "yes" : "no") << "\n\n";
 
- 
     // Exercise 9.5
 
     cout << "9.5: Find using iterator:\n";
-    auto it = v.begin();
-    while (it != v.end() && *it != value)
-        ++it;
+    auto it = find(v.begin(), v.end(), value);
 
     if (it != v.end())
         cout << "Iterator points to " << *it << "\n\n";
     else
         cout << "Not found\n\n";
 
-
     // Exercise 9.6
 
     cout << "9.6: list has no operator[] because no random access\n\n";
-
 
     // Exercise 9.7
 
     cout << "9.7: Container of strings:\n";
     vector<string> vs = { "hello", "world" };
-    cout << vs[0] << " " << vs[1] << "\n\n";
+    for (const string& s : vs) cout << s << " ";
+    cout << "\n\n";
 
     // Exercise 9.8
 
@@ -81,7 +77,6 @@ int main() {
     // Exercise 9.10
 
     cout << "9.10: iterator vs const_iterator explained\n\n";
-
 
     // Exercise 9.11
 
@@ -110,9 +105,8 @@ int main() {
     cout << "9.14: Copy list<char*> to vector<string>:\n";
     list<const char*> lc = { "hi", "there" };
     vector<string> vs2(lc.begin(), lc.end());
-    for (string s : vs2) cout << s << " ";
+    for (const string& s : vs2) cout << s << " ";
     cout << "\n\n";
-
 
     // Exercise 9.15
 
@@ -121,23 +115,24 @@ int main() {
     vector<int> v2 = { 1,2,3 };
     cout << (v1 == v2 ? "equal\n\n" : "not equal\n\n");
 
-
     // Exercise 9.16
 
     cout << "9.16: Compare list and vector:\n";
     list<int> l2 = { 1,2,3 };
     vector<int> v3 = { 1,2,3 };
     bool same = true;
-
-    auto itl = l2.begin();
-    auto itv = v3.begin();
-    while (itl != l2.end() && itv != v3.end()) {
-        if (*itl != *itv) same = false;
-        ++itl; ++itv;
+    if (l2.size() == v3.size()) {
+        auto itl = l2.begin();
+        auto itv = v3.begin();
+        while (itl != l2.end() && itv != v3.end()) {
+            if (*itl != *itv) same = false;
+            ++itl; ++itv;
+        }
     }
+    else same = false;
 
     cout << (same ? "same values\n\n" : "different\n\n");
-    
+
     // Exercise 9.17
 
     cout << "9.17: Relational operators work only on same container types\n\n";
@@ -146,20 +141,18 @@ int main() {
 
     cout << "9.18: Read words into deque:\n";
     deque<string> dq = { "one", "two", "three" };
-    for (string s : dq) cout << s << " ";
+    for (const string& s : dq) cout << s << " ";
     cout << "\n\n";
-
 
     // Exercise 9.19
 
     cout << "9.19: Read words into list:\n";
     list<string> ls = { "alpha", "beta" };
-    for (string s : ls) cout << s << " ";
+    for (const string& s : ls) cout << s << " ";
     cout << "\n\n";
 
-
     // Exercise 9.20
-    
+
     cout << "9.20: Split list into even/odd:\n";
     list<int> nums = { 1,2,3,4,5 };
     vector<int> even, odd;
@@ -174,7 +167,7 @@ int main() {
     cout << "\nOdd: ";
     for (int x : odd) cout << x << " ";
     cout << "\n\n";
- 
+
     // Exercise 9.21
 
     cout << "9.21: Insert string into vector using iterator:\n";
@@ -182,26 +175,22 @@ int main() {
     auto it2 = vs3.begin();
     it2 = vs3.insert(it2, "hello");
     it2 = vs3.insert(it2, "world");
-    for (string s : vs3) cout << s << " ";
+    for (const string& s : vs3) cout << s << " ";
     cout << "\n\n";
-
 
     // Exercise 9.22
 
     cout << "9.22: Careful iterator use when inserting\n\n";
-
 
     // Exercise 9.23
 
     cout << "9.23: Access first element safely:\n";
     cout << v.front() << " == " << *v.begin() << "\n\n";
 
-
     // Exercise 9.24 
 
     cout << "9.24: Access empty container is undefined behavior\n\n";
 
- 
     // Exercise 9.25
 
     cout << "9.25: erase removes range [begin, end)\n\n";
