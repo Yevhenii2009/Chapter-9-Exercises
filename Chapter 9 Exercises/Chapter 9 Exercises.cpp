@@ -194,6 +194,58 @@ int main() {
     // Exercise 9.25
 
     cout << "9.25: erase removes range [begin, end)\n\n";
+    cout << "9.26: Remove even numbers from vector, odd from list:\n";
+
+    // Exercise 9.26
+
+    cout << "9.26: Remove even numbers from vector, odd from list:\n";
+
+    int ia[] = { 0, 1, 1, 2, 3, 5, 8, 13, 21, 55, 89 };
+
+    vector<int> v(ia, ia + 11);
+    list<int> l(ia, ia + 11);
+
+    auto vit = v.begin();
+    while (vit != v.end()) {
+        if (*vit % 2 == 0)
+            vit = v.erase(vit);
+        else
+            ++vit;
+    }
+
+    auto lit = l.begin();
+    while (lit != l.end()) {
+        if (*lit % 2 != 0)
+            lit = l.erase(lit);
+        else
+            ++lit;
+    }
+
+    cout << "Vector: ";
+    for (int x : v) cout << x << " ";
+    cout << "\nList: ";
+    for (int x : l) cout << x << " ";
+    cout << "\n\n";
+
+    // Exercise 9.27
+    cout << "9.27: Remove odd elements from forward_list:\n";
+
+    forward_list<int> fl = { 1, 2, 3, 4, 5, 6 };
+    auto prev = fl.before_begin();
+    auto curr = fl.begin();
+
+    while (curr != fl.end()) {
+        if (*curr % 2 != 0)
+            curr = fl.erase_after(prev);
+        else {
+            prev = curr;
+            ++curr;
+        }
+    }
+
+    for (int x : fl) cout << x << " ";
+    cout << "\n\n";
+
 
     return 0;
 }
